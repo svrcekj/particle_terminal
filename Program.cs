@@ -96,11 +96,14 @@ namespace Multi_Client
         private static IPAddress GetLocalIPAddress()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
+
             foreach (var ip in host.AddressList)
             {
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    return ip;
+                    byte firstByte = ip.GetAddressBytes()[0];
+                    if (firstByte == 192)
+                        return ip;
                 }
             }
             throw new Exception("Local IP Address Not Found!");
